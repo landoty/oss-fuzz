@@ -26,13 +26,31 @@ cmake -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
       -G "Unix Makefiles" ..
 make
 
-# Compile fuzzer.
+# Compile the main fuzzer (in-tree harness).
 $CXX $CXXFLAGS -I../include $LIB_FUZZING_ENGINE \
     ../src/test_lib_json/fuzz.cpp -o $OUT/jsoncpp_fuzzer \
     lib/libjsoncpp.a
 
-# Add dictionary.
+# Add dictionary for the main fuzzer.
 cp $SRC/jsoncpp/src/test_lib_json/fuzz.dict $OUT/jsoncpp_fuzzer.dict
+
+# Compile the round-trip writer fuzzer.
+$CXX $CXXFLAGS -I../include $LIB_FUZZING_ENGINE \
+    ../src/test_lib_json/fuzz_roundtrip.cpp -o $OUT/jsoncpp_fuzzer_roundtrip \
+    lib/libjsoncpp.a
+cp $SRC/jsoncpp/src/test_lib_json/fuzz.dict $OUT/jsoncpp_fuzzer_roundtrip.dict
+
+# Compile the Value API fuzzer.
+$CXX $CXXFLAGS -I../include $LIB_FUZZING_ENGINE \
+    ../src/test_lib_json/fuzz_value.cpp -o $OUT/jsoncpp_fuzzer_value \
+    lib/libjsoncpp.a
+cp $SRC/jsoncpp/src/test_lib_json/fuzz.dict $OUT/jsoncpp_fuzzer_value.dict
+
+# Compile the deprecated Reader API fuzzer.
+$CXX $CXXFLAGS -I../include $LIB_FUZZING_ENGINE \
+    ../src/test_lib_json/fuzz_reader.cpp -o $OUT/jsoncpp_fuzzer_reader \
+    lib/libjsoncpp.a
+cp $SRC/jsoncpp/src/test_lib_json/fuzz.dict $OUT/jsoncpp_fuzzer_reader.dict
 
 if [[ $CFLAGS != *sanitize=memory* ]]; then
 # Compile json proto.
