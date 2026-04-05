@@ -1,4 +1,4 @@
-homepage: "https://github.com/open-source-parsers/jsoncpp/"
+homepage: "https://github.com/landoty/jsoncpp/"
 language: c++
 primary_contact: "chenguopingdota@163.com"
 auto_ccs:
@@ -8,7 +8,7 @@ sanitizers:
   - undefined
 # Disabled MSAN because of https://github.com/google/oss-fuzz/issues/6294
 #  - memory
-main_repo: 'https://github.com/open-source-parsers/jsoncpp'
+main_repo: 'https://github.com/landoty/jsoncpp'
 coverage_extra_args: -ignore-filename-regex=.*/LPM/.*
 fuzzing_engines:
   - afl
